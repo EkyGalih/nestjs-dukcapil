@@ -68,9 +68,13 @@ export class Keluarga {
   @OneToMany(() => Penduduk, (penduduk) => penduduk.keluarga, { cascade: true })
   penduduks: Penduduk[];
 
-  @OneToMany(() => Asetkeluarga, (asetkeluarga) => asetkeluarga.keluarga, { cascade: true })
-  list_aset: Asetkeluarga[];
+  @OneToMany(() => Asetkeluarga, (aset_keluargas) => aset_keluargas.keluarga, {
+    cascade: true,
+  })
+  aset_keluargas: Asetkeluarga[];
 
-  @OneToMany(() => Lahankomoditas, (lahan) => lahan.keluarga, { cascade: true })
-  lahan_list: Lahankomoditas[];
+  @OneToMany(() => Lahankomoditas, (lahan) => lahan.keluarga, {
+    cascade: true,
+  })
+  lahan_komoditas: Lahankomoditas[];
 }

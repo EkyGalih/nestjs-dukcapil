@@ -3,20 +3,51 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { KeluargaModule } from './keluarga/keluarga.module';
+import { PendudukModule } from './penduduk/penduduk.module';
+import { AsetkeluargaModule } from './asetkeluarga/asetkeluarga.module';
+import { LahankomoditasModule } from './lahankomoditas/lahankomoditas.module';
+import { Keluarga } from './keluarga/entities/keluarga.entity';
+import { Penduduk } from './penduduk/entities/penduduk.entity';
+import { Asetkeluarga } from './asetkeluarga/entities/asetkeluarga.entity';
+import { Lahankomoditas } from './lahankomoditas/entities/lahankomoditas.entity';
+import { KesehatanModule } from './kesehatan/kesehatan.module';
+import { Kesehatan } from './kesehatan/entities/kesehatan.entity';
+import { Pendidikan } from './pendidikan/entities/pendidikan.entity';
+import { PendidikanModule } from './pendidikan/pendidikan.module';
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
+import { User } from './user/entities/user.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
+      host: '127.0.0.1',
       port: 5432,
       username: 'postgres',
-      password: 'suru123456',
+      password: '',
       database: 'pendataan',
       autoLoadEntities: true,
-      synchronize: true,
+      entities: [
+        Keluarga,
+        Penduduk,
+        Asetkeluarga,
+        Lahankomoditas,
+        Kesehatan,
+        Pendidikan,
+        User,
+      ],
+      synchronize: false,
     }),
     KeluargaModule,
+    PendudukModule,
+    AsetkeluargaModule,
+    LahankomoditasModule,
+    KesehatanModule,
+    PendidikanModule,
+    AuthModule,
+    UserModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

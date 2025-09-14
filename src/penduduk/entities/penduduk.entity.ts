@@ -1,5 +1,15 @@
 import { Keluarga } from 'src/keluarga/entities/keluarga.entity';
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Kesehatan } from 'src/kesehatan/entities/kesehatan.entity';
+import { Pendidikan } from 'src/pendidikan/entities/pendidikan.entity';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('penduduks')
 export class Penduduk {
@@ -48,6 +58,19 @@ export class Penduduk {
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   updated_at: Date;
 
-  @OneToMany(() => Keluarga, (keluarga) => keluarga.penduduks, { cascade: true })
-  keluarga: Keluarga[];
+  @ManyToOne(() => Keluarga, (keluarga) => keluarga.penduduks, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'keluarga_id' })
+  keluarga: Keluarga;
+
+  @OneToOne(() => Kesehatan, (kesehatan) => kesehatan.penduduk, {
+    cascade: true,
+  })
+  kesehatan: Kesehatan;
+
+  @OneToOne(() => Pendidikan, (pendidikan) => pendidikan.penduduk, {
+    cascade: true,
+  })
+  pendidikan: Pendidikan;
 }

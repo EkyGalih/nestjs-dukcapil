@@ -19,12 +19,15 @@ export class KeluargaService {
 
   findAll(): Promise<Keluarga[]> {
     return this.KeluargaRepo.find({
-      relations: ['penduduks', 'aset_list', 'lahan_list'],
+      relations: ['penduduks', 'aset_keluargas', 'lahan_komoditas'],
     });
   }
 
   async findOne(id: number): Promise<Keluarga> {
-    const keluarga = await this.KeluargaRepo.findOne({ where: { id } });
+    const keluarga = await this.KeluargaRepo.findOne({
+      where: { id },
+      relations: ['penduduks', 'aset_keluargas', 'lahan_komoditas'],
+    });
     if (!keluarga) {
       throw new NotFoundException(`Keluarga dengan id ${id} tidak ditemukan`);
     }

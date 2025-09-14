@@ -1,26 +1,43 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateKesehatanDto } from './dto/create-kesehatan.dto';
 import { UpdateKesehatanDto } from './dto/update-kesehatan.dto';
+import { Kesehatan } from './entities/kesehatan.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class KesehatanService {
+  constructor(
+    @InjectRepository(Kesehatan)
+    private readonly KesehatanRepo: Repository<Kesehatan>,
+  ) {}
+
   create(createKesehatanDto: CreateKesehatanDto) {
-    return 'This action adds a new kesehatan';
+    const kesehatan = this.KesehatanRepo.create(createKesehatanDto);
+    return this.KesehatanRepo.save(kesehatan);
   }
 
   findAll() {
-    return `This action returns all kesehatan`;
+    return this.KesehatanRepo.find({
+      relations: ['penduduk'],
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} kesehatan`;
+  async findOne(id: number) {
+    const kesehatan = await this.KesehatanRepo.findOne({ where: { id } });
+    if (!kesehatan) {
+      throw new NotFoundException(`Kesehatan dengan id ${id} tidak ditemukan`);
+    }
+    return kesehatan;
   }
 
-  update(id: number, updateKesehatanDto: UpdateKesehatanDto) {
-    return `This action updates a #${id} kesehatan`;
+  async update(id: number, updateKesehatanDto: UpdateKesehatanDto) {
+    await this.KesehatanRepo.update(id, updateKesehatanDto);
+    return this.findOne(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} kesehatan`;
+  async remove(id: number) {
+    await this.KesehatanRepo.delete(id);
+    return this.findAll();
   }
 }

@@ -1,7 +1,14 @@
-import { Keluarga } from "src/keluarga/entities/keluarga.entity";
-import {Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Keluarga } from 'src/keluarga/entities/keluarga.entity';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
-@Entity('asetkeluarga')
+@Entity('aset_keluargas')
 export class Asetkeluarga {
   @PrimaryGeneratedColumn('identity', { type: 'bigint' })
   id: number;
@@ -16,7 +23,7 @@ export class Asetkeluarga {
   aset_sarana_produksi: string;
 
   @Column({ nullable: true })
-  aset_lainnya: string
+  aset_lainnya: string;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
@@ -24,6 +31,9 @@ export class Asetkeluarga {
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   updated_at: Date;
 
-  @ManyToOne(() => Keluarga, (keluarga) => keluarga.asetkeluarga)
-  keluarga: Keluarga[];
+  @ManyToOne(() => Keluarga, (keluarga) => keluarga.aset_keluargas, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'keluarga_id' })
+  keluarga: Keluarga;
 }

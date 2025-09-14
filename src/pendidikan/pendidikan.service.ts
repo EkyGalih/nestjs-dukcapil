@@ -1,26 +1,46 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePendidikanDto } from './dto/create-pendidikan.dto';
 import { UpdatePendidikanDto } from './dto/update-pendidikan.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Pendidikan } from './entities/pendidikan.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class PendidikanService {
-  create(createPendidikanDto: CreatePendidikanDto) {
-    return 'This action adds a new pendidikan';
+  constructor(
+    @InjectRepository(Pendidikan)
+    private readonly PendidikanRepo: Repository<Pendidikan>,
+  ) {}
+
+  create(createPendidikanDto: CreatePendidikanDto): Promise<Pendidikan> {
+    const pendidikan = this.PendidikanRepo.create(createPendidikanDto);
+    return this.PendidikanRepo.save(pendidikan);
   }
 
-  findAll() {
-    return `This action returns all pendidikan`;
+  findAll(): Promise<Pendidikan[]> {
+    return this.PendidikanRepo.find({
+      relations: ['penduduk'],
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} pendidikan`;
+  async findOne(id: number): Promise<Pendidikan> {
+    const pendidikan = await this.PendidikanRepo.findOne({ where: { id } });
+    if (!pendidikan) {
+      throw new NotFoundException(`Pendidikan dengan id ${id} tidak ditemukan`);
+    }
+    return pendidikan;
   }
 
-  update(id: number, updatePendidikanDto: UpdatePendidikanDto) {
-    return `This action updates a #${id} pendidikan`;
+  async update(
+    id: number,
+    updatePendidikanDto: UpdatePendidikanDto,
+  ): Promise<Pendidikan> {
+    await this.PendidikanRepo.update(id, updatePendidikanDto);
+    return this.findOne(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} pendidikan`;
+  async remove(id: number): Promise<Pendidikan[]> {
+    await this.PendidikanRepo.delete(id);
+    return this.findAll();
   }
 }
