@@ -16,6 +16,12 @@ export class Penduduk {
   @PrimaryGeneratedColumn('identity', { type: 'bigint' })
   id: number;
 
+  @Column({ type: 'int4', nullable: false })
+  urutan_nik: number;
+
+  @Column({ unique: true, nullable: false })
+  nik: string;
+
   @Column({ nullable: true })
   nama_lengkap: string;
 
