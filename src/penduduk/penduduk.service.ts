@@ -3,7 +3,7 @@ import { CreatePendudukDto } from './dto/create-penduduk.dto';
 import { UpdatePendudukDto } from './dto/update-penduduk.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Penduduk } from './entities/penduduk.entity';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 
 @Injectable()
 export class PendudukService {
@@ -17,10 +17,25 @@ export class PendudukService {
     return this.PendudukRepo.save(penduduk);
   }
 
-  findAll(): Promise<Penduduk[]> {
-    return this.PendudukRepo.find({
+  async findAll(
+    page = 1,
+    size = 10,
+    search?: string,
+  ): Promise<{ items: Penduduk[]; pages: number }> {
+    const where = search
+      ? [{ nama_lengkap: ILike(`%${search}`) }, { nik: ILike(`%${search}`) }]
+      : {};
+    const [items, total] = await this.PendudukRepo.findAndCount({
+      where,
       relations: ['keluarga', 'kesehatan', 'pendidikan'],
+      skip: (page - 1) * size,
+      take: size,
     });
+
+    return {
+      items,
+      pages: Math.ceil(total / size),
+    };
   }
 
   async findOne(id: number): Promise<Penduduk> {
@@ -34,10 +49,7 @@ export class PendudukService {
     return penduduk;
   }
 
-  async update(
-    id: number,
-    updatePendudukDto: UpdatePendudukDto,
-  ): Promise<Penduduk> {
+  async update(id: number, updatePendudukDto: UpdatePendudukDto): Promise<Penduduk> {
     await this.PendudukRepo.update(id, updatePendudukDto);
     return this.findOne(id);
   }
