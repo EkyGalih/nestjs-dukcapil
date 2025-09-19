@@ -37,13 +37,16 @@ export class Lahankomoditas {
   @Column({ nullable: true })
   pemasaran: string;
 
+  @Column({ type: 'bigint', nullable: false })
+  keluarga_id: number;
+
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   updated_at: Date;
 
-  @ManyToOne(() => Keluarga, (keluarga) => keluarga.lahan_komoditas, {
+  @ManyToOne(() => Keluarga, (keluarga) => keluarga.lahan, {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'keluarga_id' })

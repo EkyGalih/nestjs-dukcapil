@@ -1,8 +1,8 @@
-import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateLahankomoditaDto {
   @IsOptional() @IsString() kategori?: string;
-  @IsOptional() @IsNumber() keluarga_id?: number;
+  @IsNotEmpty() @IsNumber() keluarga_id?: number;
   @IsOptional() @IsBoolean() memiliki?: boolean;
   @IsOptional() @IsNumber() luas_lahan_are?: number;
   @IsOptional() @IsString() jenis_komoditas?: string;

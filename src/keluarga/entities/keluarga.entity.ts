@@ -70,5 +70,5 @@ export class Keluarga {
   @OneToMany(() => Lahankomoditas, (lahan) => lahan.keluarga, {
     cascade: true,
   })
-  lahan_komoditas: Lahankomoditas[];
+  lahan: Lahankomoditas[];
 }
