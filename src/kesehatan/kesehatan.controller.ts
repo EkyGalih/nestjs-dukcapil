@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { KesehatanService } from './kesehatan.service';
 import { CreateKesehatanDto } from './dto/create-kesehatan.dto';
 import { UpdateKesehatanDto } from './dto/update-kesehatan.dto';
@@ -20,10 +12,10 @@ export class KesehatanController {
     return this.kesehatanService.create(createKesehatanDto);
   }
 
-  @Get()
-  findAll() {
-    return this.kesehatanService.findAll();
-  }
+  // @Get()
+  // findAll() {
+  //   return this.kesehatanService.findAll();
+  // }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
@@ -31,10 +23,7 @@ export class KesehatanController {
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateKesehatanDto: UpdateKesehatanDto,
-  ) {
+  update(@Param('id') id: string, @Body() updateKesehatanDto: UpdateKesehatanDto) {
     return this.kesehatanService.update(+id, updateKesehatanDto);
   }
 

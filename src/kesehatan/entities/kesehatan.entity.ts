@@ -61,6 +61,9 @@ export class Kesehatan {
   @Column({ nullable: true })
   kebiasaan_berobat: string;
 
+  @Column({ type: 'bigint', nullable: false })
+  penduduk_id: number;
+
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
 

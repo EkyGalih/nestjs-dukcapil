@@ -25,13 +25,16 @@ export class Asetkeluarga {
   @Column({ nullable: true })
   aset_lainnya: string;
 
+  @Column({ type: 'bigint', nullable: false })
+  keluarga_id: number;
+
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   updated_at: Date;
 
-  @ManyToOne(() => Keluarga, (keluarga) => keluarga.aset_keluargas, {
+  @ManyToOne(() => Keluarga, (keluarga) => keluarga.aset_keluarga, {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'keluarga_id' })

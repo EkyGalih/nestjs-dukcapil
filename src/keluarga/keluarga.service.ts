@@ -46,7 +46,7 @@ export class KeluargaService {
     const ids = items.map((i) => i.id);
     const dateKeluarga = await this.KeluargaRepo.find({
       where: { id: In(ids) },
-      relations: ['penduduks', 'aset_keluargas', 'lahan_komoditas'],
+      relations: ['penduduks', 'aset_keluarga', 'lahan_komoditas'],
       order: { nomor_kk: 'ASC' },
     });
 
@@ -63,7 +63,7 @@ export class KeluargaService {
   }> {
     const keluarga = await this.KeluargaRepo.findOne({
       where: { id },
-      relations: ['penduduks', 'aset_keluargas', 'lahan_komoditas'],
+      relations: ['penduduks', 'aset_keluarga', 'lahan_komoditas'],
     });
     if (!keluarga) {
       throw new NotFoundException(`Keluarga dengan id ${id} tidak ditemukan`);

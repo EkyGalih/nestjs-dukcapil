@@ -1,6 +1,7 @@
-import { IsBoolean, IsInt, IsString } from 'class-validator';
+import { IsBoolean, IsInt, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateKesehatanDto {
+  @IsNotEmpty()
   @IsInt()
   penduduk_id: number;
 
