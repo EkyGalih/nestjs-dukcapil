@@ -1,5 +1,12 @@
 import { Penduduk } from 'src/penduduk/entities/penduduk.entity';
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('pendidikans')
 export class Pendidikan {
@@ -11,6 +18,9 @@ export class Pendidikan {
 
   @Column({ nullable: false })
   pendidikan_sedang_ditempuh: string;
+
+  @Column({ type: 'bigint', nullable: false })
+  penduduk_id: number;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
