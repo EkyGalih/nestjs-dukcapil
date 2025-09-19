@@ -1,3 +1,4 @@
+import { IsNotEmpty } from 'class-validator';
 import { Keluarga } from 'src/keluarga/entities/keluarga.entity';
 import { Kesehatan } from 'src/kesehatan/entities/kesehatan.entity';
 import { Pendidikan } from 'src/pendidikan/entities/pendidikan.entity';
@@ -57,6 +58,9 @@ export class Penduduk {
 
   @Column({ nullable: true })
   hubungan_dalam_keluarga: string;
+
+  @IsNotEmpty({ message: 'Keluarga wajib diisi' })
+  keluargaId: number;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;

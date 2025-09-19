@@ -1,9 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { PendudukService } from './penduduk.service';
 import { CreatePendudukDto } from './dto/create-penduduk.dto';
 import { UpdatePendudukDto } from './dto/update-penduduk.dto';
 import { Penduduk } from './entities/penduduk.entity';
+import { AuthGuard } from '@nestjs/passport';
 
+@UseGuards(AuthGuard('jwt'))
 @Controller('penduduk')
 export class PendudukController {
   constructor(private readonly pendudukService: PendudukService) {}

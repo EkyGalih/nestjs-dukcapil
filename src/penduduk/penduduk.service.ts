@@ -1,9 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePendudukDto } from './dto/create-penduduk.dto';
 import { UpdatePendudukDto } from './dto/update-penduduk.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Penduduk } from './entities/penduduk.entity';
-import { ILike, Repository } from 'typeorm';
+import { ILike, In, Repository } from 'typeorm';
 
 @Injectable()
 export class PendudukService {
@@ -12,9 +12,20 @@ export class PendudukService {
     private readonly PendudukRepo: Repository<Penduduk>,
   ) {}
 
-  create(createPendudukDto: CreatePendudukDto): Promise<Penduduk> {
+  async create(createPendudukDto: CreatePendudukDto): Promise<{
+    message: string;
+    data: Penduduk;
+  }> {
+    if (!createPendudukDto.keluargaId) {
+      throw new BadRequestException('Data keluarga wajib di isi');
+    }
     const penduduk = this.PendudukRepo.create(createPendudukDto);
-    return this.PendudukRepo.save(penduduk);
+    const saved = await this.PendudukRepo.save(penduduk);
+
+    return {
+      message: `Penduduk berhasil ditambahkan`,
+      data: saved,
+    };
   }
 
   async findAll(
@@ -23,17 +34,24 @@ export class PendudukService {
     search?: string,
   ): Promise<{ items: Penduduk[]; pages: number }> {
     const where = search
-      ? [{ nama_lengkap: ILike(`%${search}`) }, { nik: ILike(`%${search}`) }]
-      : {};
+      ? [{ nama_lengkap: ILike(`%${search}%`) }, { nik: ILike(`%${search}%`) }]
+      : undefined;
     const [items, total] = await this.PendudukRepo.findAndCount({
       where,
-      relations: ['keluarga', 'kesehatan', 'pendidikan'],
       skip: (page - 1) * size,
       take: size,
+      order: { id: 'ASC' },
+    });
+
+    const ids = items.map((i) => i.id);
+    const itemsWithRelations = await this.PendudukRepo.find({
+      where: { id: In(ids) },
+      relations: ['keluarga', 'kesehatan', 'pendidikan'],
+      order: { id: 'ASC' },
     });
 
     return {
-      items,
+      items: itemsWithRelations,
       pages: Math.ceil(total / size),
     };
   }
