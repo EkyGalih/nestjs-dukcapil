@@ -1,8 +1,8 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreatePendudukDto {
   @IsNumber() id?: number;
-  @IsNumber() keluargaId?: number;
+  @IsNotEmpty() @IsNumber() keluarga_id?: number;
   @IsNumber() urutan_nik?: number;
   @IsString() nik?: string;
   @IsString() nama_lengkap?: string;

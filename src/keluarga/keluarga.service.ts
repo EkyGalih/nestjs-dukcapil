@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateKeluargaDto } from './dto/create-keluarga.dto';
 import { UpdateKeluargaDto } from './dto/update-keluarga.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,6 +13,7 @@ export class KeluargaService {
   ) {}
 
   async create(createKeluargaDto: CreateKeluargaDto): Promise<{
+    status_code: number;
     message: string;
     data: Keluarga;
   }> {
@@ -20,6 +21,7 @@ export class KeluargaService {
     const saved = await this.KeluargaRepo.save(keluarga);
 
     return {
+      status_code: HttpStatus.CREATED,
       message: 'Data keluarga berhasil disimpan',
       data: saved,
     };
@@ -29,7 +31,7 @@ export class KeluargaService {
     page: number = 1,
     size: number = 10,
     search?: string,
-  ): Promise<{ items: Keluarga[]; pages: number }> {
+  ): Promise<{ status_code: number; items: Keluarga[]; pages: number }> {
     const where = search
       ? [{ nomor_kk: ILike(`%${search}%`) }, { nama_kepala_keluarga: ILike(`%${search}%`) }]
       : undefined;
@@ -49,12 +51,16 @@ export class KeluargaService {
     });
 
     return {
+      status_code: HttpStatus.OK,
       items: dateKeluarga,
       pages: Math.ceil(total / size),
     };
   }
 
-  async findOne(id: number): Promise<Keluarga> {
+  async findOne(id: number): Promise<{
+    status_code: number;
+    data: Keluarga;
+  }> {
     const keluarga = await this.KeluargaRepo.findOne({
       where: { id },
       relations: ['penduduks', 'aset_keluargas', 'lahan_komoditas'],
@@ -62,13 +68,17 @@ export class KeluargaService {
     if (!keluarga) {
       throw new NotFoundException(`Keluarga dengan id ${id} tidak ditemukan`);
     }
-    return keluarga;
+    return {
+      status_code: HttpStatus.OK,
+      data: keluarga,
+    };
   }
 
   async update(
     id: number,
     updateKeluargaDto: UpdateKeluargaDto,
   ): Promise<{
+    status_code: number;
     message: string;
     data: Keluarga;
   }> {
@@ -80,12 +90,13 @@ export class KeluargaService {
     }
 
     return {
-      message: 'Data keluarga berhasil di update',
+      status_code: HttpStatus.OK,
+      message: `Data keluarga ${updated.nama_kepala_keluarga} berhasil di update`,
       data: updated,
     };
   }
 
-  async remove(id: number): Promise<{ message: string }> {
+  async remove(id: number): Promise<{ status_code: number; message: string }> {
     const result = await this.KeluargaRepo.delete(id);
 
     if (result.affected === 0) {
@@ -93,6 +104,7 @@ export class KeluargaService {
     }
 
     return {
+      status_code: HttpStatus.OK,
       message: 'Data keluarga berhasil dihapus',
     };
   }

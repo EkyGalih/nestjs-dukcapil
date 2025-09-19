@@ -59,8 +59,8 @@ export class Penduduk {
   @Column({ nullable: true })
   hubungan_dalam_keluarga: string;
 
-  @IsNotEmpty({ message: 'Keluarga wajib diisi' })
-  keluargaId: number;
+  @Column({ type: 'bigint', nullable: false })
+  keluarga_id: number;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;

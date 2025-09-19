@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePendudukDto } from './dto/create-penduduk.dto';
 import { UpdatePendudukDto } from './dto/update-penduduk.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -14,9 +14,10 @@ export class PendudukService {
 
   async create(createPendudukDto: CreatePendudukDto): Promise<{
     message: string;
+    status_code: number;
     data: Penduduk;
   }> {
-    if (!createPendudukDto.keluargaId) {
+    if (!createPendudukDto.keluarga_id) {
       throw new BadRequestException('Data keluarga wajib di isi');
     }
     const penduduk = this.PendudukRepo.create(createPendudukDto);
@@ -24,6 +25,7 @@ export class PendudukService {
 
     return {
       message: `Penduduk berhasil ditambahkan`,
+      status_code: HttpStatus.CREATED,
       data: saved,
     };
   }
@@ -32,7 +34,7 @@ export class PendudukService {
     page = 1,
     size = 10,
     search?: string,
-  ): Promise<{ items: Penduduk[]; pages: number }> {
+  ): Promise<{ status_code: number; items: Penduduk[]; pages: number }> {
     const where = search
       ? [{ nama_lengkap: ILike(`%${search}%`) }, { nik: ILike(`%${search}%`) }]
       : undefined;
@@ -51,12 +53,16 @@ export class PendudukService {
     });
 
     return {
+      status_code: HttpStatus.OK,
       items: itemsWithRelations,
       pages: Math.ceil(total / size),
     };
   }
 
-  async findOne(id: number): Promise<Penduduk> {
+  async findOne(id: number): Promise<{
+    status_code: number;
+    data: Penduduk;
+  }> {
     const penduduk = await this.PendudukRepo.findOne({
       where: { id },
       relations: ['keluarga', 'kesehatan', 'pendidikan'],
@@ -64,15 +70,44 @@ export class PendudukService {
     if (!penduduk) {
       throw new NotFoundException(`Penduduk dengan id ${id} tidak ditemukan`);
     }
-    return penduduk;
+    return {
+      status_code: HttpStatus.OK,
+      data: penduduk,
+    };
   }
 
-  async update(id: number, updatePendudukDto: UpdatePendudukDto): Promise<Penduduk> {
+  async update(
+    id: number,
+    updatePendudukDto: UpdatePendudukDto,
+  ): Promise<{
+    message: string;
+    status_code: number;
+    data: Penduduk;
+  }> {
     await this.PendudukRepo.update(id, updatePendudukDto);
-    return this.findOne(id);
+    const updated = await this.PendudukRepo.findOne({ where: { id } });
+
+    if (!updated) {
+      throw new NotFoundException(`Penduduk dengan id ${id} tidak ditemukan`);
+    }
+
+    return {
+      message: `Data ${updated.nama_lengkap} berhasil di update`,
+      status_code: HttpStatus.OK,
+      data: updated,
+    };
   }
 
-  async remove(id: number): Promise<void> {
-    await this.PendudukRepo.delete(id);
+  async remove(id: number): Promise<{ status_code: number; message: string }> {
+    const result = await this.PendudukRepo.delete(id);
+
+    if (result.affected === 0) {
+      throw new NotFoundException(`Penduduk dengan id ${id} tidak ditemukan`);
+    }
+
+    return {
+      status_code: HttpStatus.OK,
+      message: 'Data penduduk berhasil dihapus',
+    };
   }
 }

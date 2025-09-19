@@ -35,7 +35,7 @@ export class PendudukController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<Penduduk> {
+  findOne(@Param('id') id: string): Promise<{ status_code: number; data: Penduduk }> {
     return this.pendudukService.findOne(Number(id));
   }
 

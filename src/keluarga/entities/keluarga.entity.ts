@@ -1,13 +1,7 @@
 import { Asetkeluarga } from 'src/asetkeluarga/entities/asetkeluarga.entity';
 import { Lahankomoditas } from 'src/lahankomoditas/entities/lahankomoditas.entity';
 import { Penduduk } from 'src/penduduk/entities/penduduk.entity';
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('keluargas')
 export class Keluarga {
