@@ -17,6 +17,8 @@ import { PendidikanModule } from './pendidikan/pendidikan.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { User } from './user/entities/user.entity';
+import { PendataanModule } from './pendataan/pendataan.module';
+import { Pendataan } from './pendataan/entities/pendataan.entity';
 
 @Module({
   imports: [
@@ -36,6 +38,7 @@ import { User } from './user/entities/user.entity';
         Kesehatan,
         Pendidikan,
         User,
+        Pendataan,
       ],
       synchronize: false,
     }),
@@ -48,6 +51,7 @@ import { User } from './user/entities/user.entity';
     AuthModule,
     UserModule,
     UserModule,
+    PendataanModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -8,31 +8,24 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-@Entity('pendidikans')
-export class Pendidikan {
+@Entity('pendataans')
+export class Pendataan {
   @PrimaryGeneratedColumn('identity', { type: 'bigint' })
   id: number;
 
   @Column({ nullable: false })
-  pendidikan_terakhir: string;
+  pendata: string;
 
-  @Column({ nullable: false })
-  pendidikan_sedang_ditempuh: string;
-
-  @Column({ type: 'bigint', nullable: false, select: false })
+  @Column({ type: 'bigint', nullable: false })
   penduduk_id: number;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
-  @Column({ select: false })
   created_at: Date;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
-  @Column({ select: false })
   updated_at: Date;
 
-  @OneToOne(() => Penduduk, (penduduk) => penduduk.pendidikan, {
-    onDelete: 'CASCADE',
-  })
+  @OneToOne(() => Penduduk, (penduduk) => penduduk.pendataan)
   @JoinColumn({ name: 'penduduk_id' })
   penduduk: Penduduk;
 }

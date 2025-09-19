@@ -54,9 +54,11 @@ export class Keluarga {
   penerima_bantuan: string;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ select: false })
   created_at: Date;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ select: false })
   updated_at: Date;
 
   @OneToMany(() => Penduduk, (penduduk) => penduduk.keluarga, { cascade: true })

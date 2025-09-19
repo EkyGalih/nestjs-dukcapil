@@ -1,6 +1,6 @@
-import { IsNotEmpty } from 'class-validator';
 import { Keluarga } from 'src/keluarga/entities/keluarga.entity';
 import { Kesehatan } from 'src/kesehatan/entities/kesehatan.entity';
+import { Pendataan } from 'src/pendataan/entities/pendataan.entity';
 import { Pendidikan } from 'src/pendidikan/entities/pendidikan.entity';
 import {
   Column,
@@ -59,13 +59,15 @@ export class Penduduk {
   @Column({ nullable: true })
   hubungan_dalam_keluarga: string;
 
-  @Column({ type: 'bigint', nullable: false })
+  @Column({ type: 'bigint', nullable: false, select: false })
   keluarga_id: number;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ select: false })
   created_at: Date;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ select: false })
   updated_at: Date;
 
   @ManyToOne(() => Keluarga, (keluarga) => keluarga.penduduks, {
@@ -83,4 +85,7 @@ export class Penduduk {
     cascade: true,
   })
   pendidikan: Pendidikan;
+
+  @OneToOne(() => Pendataan, (pendataan) => pendataan.penduduk)
+  pendataan: Pendataan;
 }

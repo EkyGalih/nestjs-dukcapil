@@ -48,7 +48,7 @@ export class PendudukService {
     const ids = items.map((i) => i.id);
     const itemsWithRelations = await this.PendudukRepo.find({
       where: { id: In(ids) },
-      relations: ['keluarga', 'kesehatan', 'pendidikan'],
+      relations: ['pendataan', 'keluarga', 'kesehatan', 'pendidikan'],
       order: { id: 'ASC' },
     });
 
@@ -65,7 +65,12 @@ export class PendudukService {
   }> {
     const penduduk = await this.PendudukRepo.findOne({
       where: { id },
-      relations: ['keluarga', 'kesehatan', 'pendidikan'],
+      select: {
+        pendataan: {
+          pendata: true,
+        },
+      },
+      relations: ['pendataan', 'keluarga', 'kesehatan', 'pendidikan'],
     });
     if (!penduduk) {
       throw new NotFoundException(`Penduduk dengan id ${id} tidak ditemukan`);
