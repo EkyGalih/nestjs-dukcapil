@@ -5,7 +5,7 @@ export class CreateKeluargaDto {
   @IsOptional() @IsString() nomor_kk?: string;
   @IsOptional() @IsString() nama_kepala_keluarga?: string;
   @IsOptional() @IsString() dusun?: string;
-  @IsOptional() @IsString() rw?: string;
+  @IsOptional() @IsNumber() rw?: number;
   @IsOptional() @IsString() rt?: string;
   @IsOptional() @IsString() nomor_rumah?: string;
   @IsOptional() @IsString() status_kepemilikan_rumah?: string;

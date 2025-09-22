@@ -35,7 +35,7 @@ export class DataSeeder implements Seeder {
       nomor_kk: faker.string.numeric(16),
       nama_kepala_keluarga: faker.person.fullName(),
       dusun: faker.location.street(),
-      rw: faker.string.numeric(2),
+      rw: faker.number.int(5),
       rt: faker.string.numeric(2),
       nomor_rumah: faker.string.numeric(2),
       status_kepemilikan_lahan_rumah: faker.string.alpha(10).toUpperCase(),
