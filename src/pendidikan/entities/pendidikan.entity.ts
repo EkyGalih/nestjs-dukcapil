@@ -1,9 +1,11 @@
+import { Pendataan } from 'src/pendataan/entities/pendataan.entity';
 import { Penduduk } from 'src/penduduk/entities/penduduk.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -35,4 +37,9 @@ export class Pendidikan {
   })
   @JoinColumn({ name: 'penduduk_id' })
   penduduk: Penduduk;
+
+  @OneToMany(() => Pendataan, (pendataan) => pendataan.pendidikan, {
+    cascade: true,
+  })
+  pendataan: Pendataan[];
 }

@@ -1,10 +1,12 @@
 import { Keluarga } from 'src/keluarga/entities/keluarga.entity';
+import { Pendataan } from 'src/pendataan/entities/pendataan.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -39,4 +41,9 @@ export class Asetkeluarga {
   })
   @JoinColumn({ name: 'keluarga_id' })
   keluarga: Keluarga;
+
+  @OneToMany(() => Pendataan, (pendataan) => pendataan.aset_keluarga, {
+    cascade: true,
+  })
+  pendataan: Pendataan[];
 }

@@ -1,10 +1,12 @@
 import { Keluarga } from 'src/keluarga/entities/keluarga.entity';
+import { Pendataan } from 'src/pendataan/entities/pendataan.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -51,4 +53,9 @@ export class Lahankomoditas {
   })
   @JoinColumn({ name: 'keluarga_id' })
   keluarga: Keluarga;
+
+  @OneToMany(() => Pendataan, (pendataan) => pendataan.lahan, {
+    cascade: true,
+  })
+  pendataan: Pendataan[];
 }

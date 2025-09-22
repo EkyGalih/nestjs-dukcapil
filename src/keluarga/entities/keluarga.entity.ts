@@ -1,5 +1,6 @@
 import { Asetkeluarga } from 'src/asetkeluarga/entities/asetkeluarga.entity';
 import { Lahankomoditas } from 'src/lahankomoditas/entities/lahankomoditas.entity';
+import { Pendataan } from 'src/pendataan/entities/pendataan.entity';
 import { Penduduk } from 'src/penduduk/entities/penduduk.entity';
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -8,8 +9,8 @@ export class Keluarga {
   @PrimaryGeneratedColumn('identity', { type: 'bigint' })
   id: number;
 
-  @Column({ nullable: true })
-  nomor: string;
+  @Column({ type: 'bigint', nullable: true })
+  nomor: number;
 
   @Column({ nullable: true })
   nomor_kk: string;
@@ -73,4 +74,9 @@ export class Keluarga {
     cascade: true,
   })
   lahan: Lahankomoditas[];
+
+  @OneToMany(() => Pendataan, (pendataan) => pendataan.keluarga, {
+    cascade: true,
+  })
+  pendataan: Pendataan[];
 }

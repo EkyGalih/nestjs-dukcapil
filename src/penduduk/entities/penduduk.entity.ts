@@ -2,12 +2,14 @@ import { Keluarga } from 'src/keluarga/entities/keluarga.entity';
 import { Kesehatan } from 'src/kesehatan/entities/kesehatan.entity';
 import { Pendataan } from 'src/pendataan/entities/pendataan.entity';
 import { Pendidikan } from 'src/pendidikan/entities/pendidikan.entity';
+import { User } from 'src/user/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -86,6 +88,13 @@ export class Penduduk {
   })
   pendidikan: Pendidikan;
 
-  @OneToOne(() => Pendataan, (pendataan) => pendataan.penduduk)
-  pendataan: Pendataan;
+  @OneToMany(() => Pendataan, (pendataan) => pendataan.penduduk, {
+    cascade: true,
+  })
+  pendataan: Pendataan[];
+
+  @OneToOne(() => User, (user) => user.penduduk, {
+    cascade: true,
+  })
+  user: User;
 }

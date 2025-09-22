@@ -65,11 +65,11 @@ export class PendudukService {
   }> {
     const penduduk = await this.PendudukRepo.findOne({
       where: { id },
-      select: {
-        pendataan: {
-          pendata: true,
-        },
-      },
+      // select: {
+      //   pendataan: {
+      //     pendata: true,
+      //   },
+      // },
       relations: ['pendataan', 'keluarga', 'kesehatan', 'pendidikan'],
     });
     if (!penduduk) {

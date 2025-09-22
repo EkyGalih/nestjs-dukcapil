@@ -40,7 +40,7 @@ import { Pendataan } from './pendataan/entities/pendataan.entity';
         User,
         Pendataan,
       ],
-      synchronize: false,
+      synchronize: true,
     }),
     KeluargaModule,
     PendudukModule,

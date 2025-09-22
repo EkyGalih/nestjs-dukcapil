@@ -1,8 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { KesehatanService } from './kesehatan.service';
 import { CreateKesehatanDto } from './dto/create-kesehatan.dto';
 import { UpdateKesehatanDto } from './dto/update-kesehatan.dto';
+import { AuthGuard } from '@nestjs/passport';
 
+@UseGuards(AuthGuard('jwt'))
 @Controller('kesehatan')
 export class KesehatanController {
   constructor(private readonly kesehatanService: KesehatanService) {}
