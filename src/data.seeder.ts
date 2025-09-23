@@ -31,15 +31,15 @@ export class DataSeeder implements Seeder {
 
   async seed(): Promise<any> {
     const keluarga = this.KeluargaRepo.create({
-      nomor: faker.string.numeric(6),
+      nomor: faker.number.int({ min: 1, max: 500 }),
       nomor_kk: faker.string.numeric(16),
       nama_kepala_keluarga: faker.person.fullName(),
       dusun: faker.location.street(),
-      rw: faker.number.int(5),
-      rt: faker.string.numeric(2),
-      nomor_rumah: faker.string.numeric(2),
+      rw: faker.number.int({ min: 1, max: 500 }),
+      rt: faker.number.int({ min: 1, max: 500 }),
+      nomor_rumah: faker.number.int({ min: 1, max: 500 }),
       status_kepemilikan_lahan_rumah: faker.string.alpha(10).toUpperCase(),
-      luas_lantai_m2: faker.number.int(5),
+      luas_lantai_m2: faker.number.int({ min: 1, max: 500 }),
       dinding_rumah: faker.string.alpha(10).toUpperCase(),
       lantai_rumah: faker.number.bigInt(2),
       atap_rumah: faker.string.alpha(10).toUpperCase(),

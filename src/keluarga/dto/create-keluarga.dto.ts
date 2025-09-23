@@ -1,7 +1,7 @@
 import { IsOptional, IsString, IsNumber } from 'class-validator';
 
 export class CreateKeluargaDto {
-  @IsOptional() @IsString() nomor?: string;
+  @IsOptional() @IsNumber() nomor?: number;
   @IsOptional() @IsString() nomor_kk?: string;
   @IsOptional() @IsString() nama_kepala_keluarga?: string;
   @IsOptional() @IsString() dusun?: string;

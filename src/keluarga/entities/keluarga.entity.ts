@@ -9,8 +9,8 @@ export class Keluarga {
   @PrimaryGeneratedColumn('identity', { type: 'bigint' })
   id: number;
 
-  @Column({ nullable: true })
-  nomor: string;
+  @Column({ type: 'bigint', nullable: true })
+  nomor: number;
 
   @Column({ nullable: true })
   nomor_kk: string;
@@ -24,11 +24,11 @@ export class Keluarga {
   @Column({ type: 'int', nullable: true })
   rw: number;
 
-  @Column({ nullable: true })
-  rt: string;
+  @Column({ type: 'int', nullable: true })
+  rt: number;
 
-  @Column({ nullable: true })
-  nomor_rumah: string;
+  @Column({ type: 'int', nullable: true })
+  nomor_rumah: number;
 
   @Column({ nullable: true })
   status_kepemilikan_rumah: string;
