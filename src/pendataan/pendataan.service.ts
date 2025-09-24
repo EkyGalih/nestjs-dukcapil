@@ -27,8 +27,8 @@ export class PendataanService {
   }
 
   async findAll(
-    page = 1,
-    size: 10,
+    page: number = 1,
+    size: number = 10,
   ): Promise<{
     status_code: number;
     items: Pendataan[];
@@ -43,7 +43,20 @@ export class PendataanService {
     const ids = items.map((i) => i.id);
     const itemsWithRelations = await this.PendataanRepo.find({
       where: { id: In(ids) },
-      relations: ['keluarga', 'asetkeluarga', 'penduduk', 'kesehatan', 'pendidikan'],
+      relations: [
+        'keluarga',
+        'aset_keluarga',
+        'lahan',
+        'penduduk',
+        'kesehatan',
+        'pendidikan',
+        'user',
+      ],
+      select: {
+        user: {
+          full_name: true,
+        },
+      },
       order: { id: 'ASC' },
     });
 

@@ -1,4 +1,4 @@
-import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsDecimal, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateLahankomoditaDto {
   @IsOptional() @IsString() kategori?: string;
@@ -8,6 +8,6 @@ export class CreateLahankomoditaDto {
   @IsOptional() @IsString() jenis_komoditas?: string;
   @IsOptional() @IsNumber() produksi?: number;
   @IsOptional() @IsString() satuan_produksi?: string;
-  @IsOptional() @IsNumber() nilai_produksi?: number;
+  @IsOptional() @IsDecimal() nilai_produksi?: number;
   @IsOptional() @IsString() pemasaran?: string;
 }

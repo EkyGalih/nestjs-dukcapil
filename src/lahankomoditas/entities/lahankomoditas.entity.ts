@@ -34,7 +34,7 @@ export class Lahankomoditas {
   @Column({ nullable: false })
   satuan_produksi: string;
 
-  @Column({ type: 'int', default: 0 })
+  @Column({ type: 'decimal', precision: 15, scale: 2, nullable: true })
   nilai_produksi: number;
 
   @Column({ nullable: true })

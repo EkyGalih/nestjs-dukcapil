@@ -45,67 +45,60 @@ export class DataSeeder implements Seeder {
       user = await this.UserRepo.save(user);
     }
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 50; i++) {
       const keluarga = this.KeluargaRepo.create({
-        nomor: faker.string.numeric(3),
+        nomor: faker.string.numeric(5),
         nomor_kk: faker.string.numeric(16),
         nama_kepala_keluarga: faker.person.fullName(),
-        dusun: faker.location.street(),
-        rw: faker.number.int({ min: 1, max: 500 }),
-        rt: faker.number.int({ min: 1, max: 500 }),
-        nomor_rumah: faker.number.int({ min: 1, max: 500 }),
-        status_kepemilikan_lahan_rumah: faker.helpers.arrayElement(['milik sendiri, sewa']),
-        luas_lantai_m2: faker.number.int({ min: 1, max: 10 }),
-        dinding_rumah: faker.helpers.arrayElement(['beton', 'kayu', 'bambu']),
-        lantai_rumah: faker.helpers.arrayElement(['2 lantai', '1 lantai', '3 lantai']), // perbaiki biar string, sesuai entity
-        atap_rumah: faker.helpers.arrayElement(['genteng', 'asbes', 'spandek']),
-        status_kepemilikan_rumah: faker.string.alpha(10).toUpperCase(),
-        luas_lahan_rumah_m2: faker.number.int({ min: 1, max: 500 }),
-        penerima_bantuan: faker.helpers.arrayElement([
-          'BSU',
-          'Rumah Layak Huni',
-          'Keluarga Berencana',
+        dusun: faker.location.city(),
+        rw: faker.number.int({ min: 1, max: 100 }),
+        rt: faker.number.int({ min: 1, max: 100 }),
+        nomor_rumah: faker.number.int({ min: 1, max: 200 }),
+        status_kepemilikan_lahan_rumah: faker.helpers.arrayElement([
+          'milik sendiri',
+          'Kontrak',
+          'Sewa',
+          'Menumpang',
         ]),
+        luas_lantai_m2: faker.number.int({ min: 1, max: 200 }),
+        dinding_rumah: faker.helpers.arrayElement(['beton', 'kayu', 'bambu', 'triplek', 'bata']),
+        lantai_rumah: faker.helpers.arrayElement(['keramik', 'semen', 'tanah']), // perbaiki biar string, sesuai entity
+        atap_rumah: faker.helpers.arrayElement(['genteng', 'asbes', 'spandek', 'seng']),
+        status_kepemilikan_rumah: faker.helpers.arrayElement(['Milik Sendiri', 'Warisan', 'Sewa']),
+        luas_lahan_rumah_m2: faker.number.int({ min: 1, max: 500 }),
+        penerima_bantuan: faker.helpers.arrayElement(['BSU', 'PKH', 'BPNT', 'Non Penerima']),
       });
       await this.KeluargaRepo.save(keluarga);
 
       const aset_keluarga = this.AsetkeluargaRepo.create({
-        penguasaan_aset_tanah: faker.helpers.arrayElement([
-          'Milik Sendiri',
-          'Sewa',
-          'Pinjam Pakai',
-          'Bagi Hasil',
-          'Tanpa Hak',
-        ]),
+        penguasaan_aset_tanah: faker.helpers.arrayElement(['Ya', 'Tidak']),
         aset_sarana_transportasi_umum: faker.helpers.arrayElement(['mobil', 'motor', 'sepeda']),
         aset_sarana_produksi: faker.helpers.arrayElement(['kebun', 'sawah', 'peternakan']),
-        aset_lainnya: faker.helpers.arrayElement(['kripto', 'saham', 'investasi']),
+        aset_lainnya: faker.helpers.arrayElement(['Hp', 'TV', 'Laptop', 'Tablet']),
         keluarga_id: keluarga.id,
       });
       await this.AsetkeluargaRepo.save(aset_keluarga);
 
       const lahan = this.LahankomoditasRepo.create({
         kategori: faker.helpers.arrayElement([
-          'perkebunan',
-          'pertanian',
-          'perairan',
-          'perkantoran',
-          'pertokoan',
+          'Tanaman Pangan',
+          'Perikanan',
+          'Ternak',
+          'Perkebunan',
         ]),
         memiliki: faker.datatype.boolean(),
-        luas_lahan_are: faker.number.int({ min: 1, max: 500 }),
+        luas_lahan_are: faker.number.int({ min: 1, max: 100 }),
         jenis_komoditas: faker.helpers.arrayElement([
-          'padi',
-          'jagung',
+          'Sapi',
+          'Jagung',
           'kacang',
-          'ikan',
-          'toko kelontong',
-          'toko baju',
+          'Ikan',
+          'Ikan, Lele',
         ]),
-        produksi: faker.number.int({ min: 1, max: 500 }),
-        satuan_produksi: faker.helpers.arrayElement(['kg', 'ton', 'ikat', 'karung', 'liter']),
-        nilai_produksi: faker.number.int({ min: 1, max: 500 }),
-        pemasaran: faker.helpers.arrayElement(['lokal', 'regional', 'nasional', 'ekspor']),
+        produksi: faker.number.int({ min: 1, max: 5000 }),
+        satuan_produksi: faker.helpers.arrayElement(['kg', 'ton', 'ekor', 'karung']),
+        nilai_produksi: faker.number.float({ min: 1000, max: 1000000 }),
+        pemasaran: faker.helpers.arrayElement(['lokal', 'ekspor']),
         keluarga_id: keluarga.id,
       });
       await this.LahankomoditasRepo.save(lahan);
@@ -125,12 +118,7 @@ export class DataSeeder implements Seeder {
           'Buddha',
           'Konghucu',
         ]),
-        status_pernikahan: faker.helpers.arrayElement([
-          'Belum Kawin',
-          'Kawin',
-          'Cerai Hidup',
-          'Cerai Mati',
-        ]),
+        status_pernikahan: faker.helpers.arrayElement(['Belum Kawin', 'Kawin']),
         duda_janda: faker.helpers.arrayElement(['-', 'Duda', 'Janda']),
         golongan_darah: faker.helpers.arrayElement(['A', 'B', 'AB', 'O']),
         pekerjaan: faker.helpers.arrayElement([
@@ -185,7 +173,7 @@ export class DataSeeder implements Seeder {
 
       const kesehatan = this.KesehatanRepo.create({
         jaminan_sosial_ketenagakerjaan: faker.helpers.arrayElement([
-          'BPJS Ketenagakerjaan',
+          'BPJS TK',
           'Asuransi Swasta',
           'Tidak Ada',
         ]),
