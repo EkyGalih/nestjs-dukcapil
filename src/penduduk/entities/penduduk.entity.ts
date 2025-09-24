@@ -12,6 +12,7 @@ import {
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('penduduks')
@@ -19,7 +20,7 @@ export class Penduduk {
   @PrimaryGeneratedColumn('identity', { type: 'bigint' })
   id: number;
 
-  @Column({ type: 'int4', nullable: false })
+  @Column({ type: 'int', nullable: false })
   urutan_nik: number;
 
   @Column({ unique: true, nullable: false })
@@ -35,7 +36,7 @@ export class Penduduk {
   tempat_lahir: string;
 
   @Column({ type: 'date', nullable: true })
-  tanggal_lahir: string;
+  tanggal_lahir: Date;
 
   @Column({ nullable: true })
   agama: string;
@@ -64,12 +65,10 @@ export class Penduduk {
   @Column({ type: 'bigint', nullable: false, select: false })
   keluarga_id: number;
 
-  @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
-  @Column({ select: false })
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP', select: false })
   created_at: Date;
 
-  @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
-  @Column({ select: false })
+  @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP', select: false })
   updated_at: Date;
 
   @ManyToOne(() => Keluarga, (keluarga) => keluarga.penduduks, {

@@ -66,12 +66,10 @@ export class Kesehatan {
   @Column({ type: 'bigint', nullable: false, select: false })
   penduduk_id: number;
 
-  @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
-  @Column({ select: false })
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP', select: false })
   created_at: Date;
 
-  @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
-  @Column({ select: false })
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP', select: false })
   updated_at: Date;
 
   @OneToOne(() => Penduduk, (penduduk) => penduduk.kesehatan, {

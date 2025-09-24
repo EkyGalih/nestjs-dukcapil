@@ -2,15 +2,22 @@ import { Asetkeluarga } from 'src/asetkeluarga/entities/asetkeluarga.entity';
 import { Lahankomoditas } from 'src/lahankomoditas/entities/lahankomoditas.entity';
 import { Pendataan } from 'src/pendataan/entities/pendataan.entity';
 import { Penduduk } from 'src/penduduk/entities/penduduk.entity';
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('keluargas')
 export class Keluarga {
   @PrimaryGeneratedColumn('identity', { type: 'bigint' })
   id: number;
 
-  @Column({ type: 'bigint', nullable: true })
-  nomor: number;
+  @Column({ nullable: true })
+  nomor: string;
 
   @Column({ nullable: true })
   nomor_kk: string;
@@ -54,12 +61,10 @@ export class Keluarga {
   @Column({ nullable: true })
   penerima_bantuan: string;
 
-  @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
-  @Column({ select: false })
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP', select: false })
   created_at: Date;
 
-  @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
-  @Column({ select: false })
+  @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP', select: false })
   updated_at: Date;
 
   @OneToMany(() => Penduduk, (penduduk) => penduduk.keluarga, { cascade: true })

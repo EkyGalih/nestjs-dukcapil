@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { PendataanService } from './pendataan.service';
 import { CreatePendataanDto } from './dto/create-pendataan.dto';
 import { UpdatePendataanDto } from './dto/update-pendataan.dto';
+import { Pendataan } from './entities/pendataan.entity';
 
 @Controller('pendataan')
 export class PendataanController {
@@ -13,8 +14,11 @@ export class PendataanController {
   }
 
   @Get()
-  findAll() {
-    return this.pendataanService.findAll();
+  async findAll(
+    @Query('page') page: number = 1,
+    @Query('size') size: number = 10,
+  ): Promise<{ items: Pendataan[]; pages: number }> {
+    return this.pendataanService.findAll(Number(page), Number(size));
   }
 
   @Get(':id')

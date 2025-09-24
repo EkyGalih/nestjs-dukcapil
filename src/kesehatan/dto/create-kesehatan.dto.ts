@@ -3,53 +3,53 @@ import { IsBoolean, IsInt, IsNotEmpty, IsString } from 'class-validator';
 export class CreateKesehatanDto {
   @IsNotEmpty()
   @IsInt()
-  penduduk_id: number;
+  penduduk_id?: number;
 
   @IsString()
-  jaminan_sosial_ketenagakerjaan: string;
+  jaminan_sosial_ketenagakerjaan?: string;
 
   @IsString()
-  jaminan_sosial_kesehatan: string;
+  jaminan_sosial_kesehatan?: string;
 
   @IsString()
-  penyakit_sedang_diderita: string;
+  penyakit_sedang_diderita?: string;
 
   @IsString()
-  penyakit_kelainan: string;
+  penyakit_kelainan?: string;
 
   @IsString()
-  cacat_fisik: string;
+  cacat_fisik?: string;
 
   @IsString()
-  cacat_mental: string;
+  cacat_mental?: string;
 
   @IsBoolean()
-  ibu_hamil_melahirkan: boolean;
+  ibu_hamil_melahirkan?: boolean;
 
   @IsString()
-  kualitas_ibu_hamil: string;
+  kualitas_ibu_hamil?: string;
 
   @IsString()
-  tempat_persalinan: string;
+  tempat_persalinan?: string;
 
   @IsString()
-  pertolongan_persalinan: string;
+  pertolongan_persalinan?: string;
 
   @IsString()
-  kualitas_bayi: string;
+  kualitas_bayi?: string;
 
   @IsString()
-  cakupan_imunisasi: string;
+  cakupan_imunisasi?: string;
 
   @IsString()
-  status_gizi_balita: string;
+  status_gizi_balita?: string;
 
   @IsString()
-  perilaku_hidup_bersih: string;
+  perilaku_hidup_bersih?: string;
 
   @IsString()
-  pola_makan: string;
+  pola_makan?: string;
 
   @IsString()
-  kebiasaan_berobat: string;
+  kebiasaan_berobat?: string;
 }

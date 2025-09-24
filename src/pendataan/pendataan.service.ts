@@ -1,15 +1,57 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { CreatePendataanDto } from './dto/create-pendataan.dto';
 import { UpdatePendataanDto } from './dto/update-pendataan.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Pendataan } from './entities/pendataan.entity';
+import { In, Repository } from 'typeorm';
 
 @Injectable()
 export class PendataanService {
-  create(createPendataanDto: CreatePendataanDto) {
-    return 'This action adds a new pendataan';
+  constructor(
+    @InjectRepository(Pendataan)
+    private readonly PendataanRepo: Repository<Pendataan>,
+  ) {}
+  async create(createPendataanDto: CreatePendataanDto): Promise<{
+    status_code: number;
+    message: string;
+    data: Pendataan;
+  }> {
+    const pendataan = this.PendataanRepo.create(createPendataanDto);
+    const saved = await this.PendataanRepo.save(pendataan);
+
+    return {
+      status_code: HttpStatus.CREATED,
+      message: 'Data pendataan berhasil disimpan',
+      data: saved,
+    };
   }
 
-  findAll() {
-    return `This action returns all pendataan`;
+  async findAll(
+    page = 1,
+    size: 10,
+  ): Promise<{
+    status_code: number;
+    items: Pendataan[];
+    pages: number;
+  }> {
+    const [items, total] = await this.PendataanRepo.findAndCount({
+      skip: (page - 1) * size,
+      take: size,
+      order: { id: 'ASC' },
+    });
+
+    const ids = items.map((i) => i.id);
+    const itemsWithRelations = await this.PendataanRepo.find({
+      where: { id: In(ids) },
+      relations: ['keluarga', 'asetkeluarga', 'penduduk', 'kesehatan', 'pendidikan'],
+      order: { id: 'ASC' },
+    });
+
+    return {
+      status_code: HttpStatus.OK,
+      items: itemsWithRelations,
+      pages: Math.ceil(total / size),
+    };
   }
 
   findOne(id: number) {

@@ -35,7 +35,7 @@ export class Pendataan {
   aset_keluarga_id: number;
 
   @Column({ type: 'bigint', nullable: true })
-  lahan_komoditas_id: number;
+  lahan_id: number;
 
   @Column({ type: 'bigint', nullable: false })
   user_id: number;
